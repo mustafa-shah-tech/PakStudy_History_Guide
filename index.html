@@ -14,6 +14,7 @@
 /* ============================================================
    DESIGN TOKENS — Crescent Green & Gold Theme
    ============================================================ */
+/* ── DARK THEME (default) ── */
 :root {
   --bg:         #090e0b;
   --bg2:        #101712;
@@ -22,15 +23,15 @@
   --border:     #25362a;
   --border2:    #324a3a;
 
-  --green:      #10b981; /* Pakistan Green vibe */
+  --green:      #10b981;
   --green2:     #34d399;
   --green-dim:  rgba(16, 185, 129, 0.15);
-  
+
   --gold:       #fbbf24;
   --gold2:      #f59e0b;
   --gold-dim:   rgba(251, 191, 36, 0.15);
 
-  --crimson:    #ef4444; /* Exam Alerts */
+  --crimson:    #ef4444;
   --crim-dim:   rgba(239, 68, 68, 0.15);
 
   --blue:       #38bdf8;
@@ -41,6 +42,9 @@
   --text3:      #64748b;
   --white:      #f8fafc;
 
+  --topbar-bg:  rgba(9,14,11,0.92);
+  --shadow:     0 2px 12px rgba(0,0,0,0.4);
+
   --serif:      'Crimson Pro', Georgia, serif;
   --display:    'Playfair Display', serif;
   --sans:       'Inter', system-ui, sans-serif;
@@ -48,6 +52,66 @@
 
   --radius:     12px;
   --radius2:    16px;
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --bg:         #f4f7f4;
+  --bg2:        #eaf0ea;
+  --bg3:        #dde8dd;
+  --panel:      #d4e2d4;
+  --border:     #bdd0bd;
+  --border2:    #a8c4a8;
+
+  --green:      #0d9668;
+  --green2:     #059669;
+  --green-dim:  rgba(13, 150, 104, 0.12);
+
+  --gold:       #b45309;
+  --gold2:      #d97706;
+  --gold-dim:   rgba(180, 83, 9, 0.12);
+
+  --crimson:    #dc2626;
+  --crim-dim:   rgba(220, 38, 38, 0.1);
+
+  --blue:       #0369a1;
+  --blue-dim:   rgba(3, 105, 161, 0.1);
+
+  --text:       #1a2e1a;
+  --text2:      #3d5c3d;
+  --text3:      #6b7c6b;
+  --white:      #0f2010;
+
+  --topbar-bg:  rgba(234,240,234,0.94);
+  --shadow:     0 2px 12px rgba(0,0,0,0.1);
+}
+
+/* ── SYSTEM PREFERENCE: auto-apply light if user has light OS theme ── */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:         #f4f7f4;
+    --bg2:        #eaf0ea;
+    --bg3:        #dde8dd;
+    --panel:      #d4e2d4;
+    --border:     #bdd0bd;
+    --border2:    #a8c4a8;
+    --green:      #0d9668;
+    --green2:     #059669;
+    --green-dim:  rgba(13, 150, 104, 0.12);
+    --gold:       #b45309;
+    --gold2:      #d97706;
+    --gold-dim:   rgba(180, 83, 9, 0.12);
+    --crimson:    #dc2626;
+    --crim-dim:   rgba(220, 38, 38, 0.1);
+    --blue:       #0369a1;
+    --blue-dim:   rgba(3, 105, 161, 0.1);
+    --text:       #1a2e1a;
+    --text2:      #3d5c3d;
+    --text3:      #6b7c6b;
+    --white:      #0f2010;
+    --topbar-bg:  rgba(234,240,234,0.94);
+    --shadow:     0 2px 12px rgba(0,0,0,0.1);
+  }
 }
 
 /* ============================================================
@@ -150,11 +214,12 @@ a{color:var(--green2);text-decoration:none}
    ============================================================ */
 .topbar{
   position:sticky;top:0;
-  background:rgba(9,14,11,0.92);backdrop-filter:blur(14px);
+  background:var(--topbar-bg);backdrop-filter:blur(14px);
   border-bottom:1px solid var(--border);z-index:40;
   padding:0.7rem 3rem;display:flex;align-items:center;
   justify-content:space-between;font-size:12px;font-weight:500;
   margin:0 -3rem;
+  transition:background 0.3s,border-color 0.3s;
 }
 .topbar .tb-left{color:var(--text3);display:flex;align-items:center;gap:0.5rem}
 .topbar .tb-left strong{color:var(--text2)}
@@ -348,6 +413,29 @@ p{margin-bottom:1rem;color:var(--text);font-size:1rem;font-family:var(--serif);f
 .q-feedback.fail{background:var(--crim-dim);color:var(--crimson);border:1px solid rgba(239, 68, 68, 0.2);}
 
 /* ============================================================
+   THEME TOGGLE BUTTON
+   ============================================================ */
+.theme-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border2);
+  cursor: pointer; font-size: 16px; transition: all 0.25s;
+  flex-shrink: 0; line-height: 1;
+}
+.theme-toggle:hover { background: var(--green-dim); border-color: var(--green); transform: scale(1.1); }
+
+/* Mobile floating theme toggle (next to hamburger) */
+.theme-toggle-mobile {
+  display: none;
+  position: fixed; top: 0.7rem; right: 3.5rem; z-index: 200;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border2);
+  cursor: pointer; font-size: 17px; align-items: center;
+  justify-content: center; transition: all 0.25s;
+}
+.theme-toggle-mobile:hover { background: var(--green-dim); border-color: var(--green); }
+
+/* ============================================================
    RESPONSIVE (Mobile First & All Displays)
    ============================================================ */
 @media (max-width: 1024px) {
@@ -358,6 +446,7 @@ p{margin-bottom:1rem;color:var(--text);font-size:1rem;font-family:var(--serif);f
 
 @media (max-width: 768px) {
   .hamburger { display: flex; }
+  .theme-toggle-mobile { display: flex; }
   .overlay { display: block; }
   .sidebar {
     position: fixed; left: 0; top: 0; height: 100vh;
@@ -366,7 +455,7 @@ p{margin-bottom:1rem;color:var(--text);font-size:1rem;font-family:var(--serif);f
   .sidebar.open { transform: translateX(0); }
   .shell { display: block; }
   .main { padding: 0 1.2rem 5rem; max-width: 100%; margin-top: 3.5rem; }
-  .topbar { display: none; /* Hide topbar on mobile, rely on header */ }
+  .topbar { display: none; }
   .hero { padding: 1rem 0 2rem; }
   .hero::before { left: -1.2rem; right: -1.2rem; }
   .hero h1 { font-size: 2rem; }
@@ -380,6 +469,13 @@ p{margin-bottom:1rem;color:var(--text);font-size:1rem;font-family:var(--serif);f
   .box { padding: 1rem 1.2rem; }
   .fml-body { font-size: 0.8rem; }
 }
+
+/* Smooth color transitions across all elements */
+body, .sidebar, .topbar, .hero, .box, .fml, .cmp-card,
+.nav-item, .check-btn, .opt, .mini-quiz, .ch-header,
+.sidebar-logo, .progress-ring-wrap, .stat-pill {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
 </style>
 </head>
 <body>
@@ -387,6 +483,7 @@ p{margin-bottom:1rem;color:var(--text);font-size:1rem;font-family:var(--serif);f
 <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
   <span></span><span></span><span></span>
 </button>
+<button class="theme-toggle-mobile" id="themeToggleMobile" aria-label="Toggle theme">🌙</button>
 <div class="overlay" id="overlay"></div>
 
 <div class="shell">
@@ -437,6 +534,7 @@ p{margin-bottom:1rem;color:var(--text);font-size:1rem;font-family:var(--serif);f
     <div class="tb-right">
       <span id="topPct">0%</span>
       <div class="pbar"><div class="pbar-fill" id="topBar"></div></div>
+      <button class="theme-toggle" id="themeToggleDesktop" aria-label="Toggle theme">🌙</button>
     </div>
   </div>
 
@@ -811,7 +909,47 @@ function checkAnswer(btn, isCorrect, feedback) {
   fbDiv.className = 'q-feedback show ' + (isCorrect ? 'ok' : 'fail');
 }
 
+/* ── THEME TOGGLE ── */
+const THEME_KEY = 'pak_study_theme';
+const root = document.documentElement;
+
+function getSystemTheme() {
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
+function applyTheme(theme) {
+  root.setAttribute('data-theme', theme);
+  const icon = theme === 'light' ? '☀️' : '🌙';
+  document.getElementById('themeToggleDesktop').textContent = icon;
+  document.getElementById('themeToggleMobile').textContent = icon;
+}
+
+function toggleTheme() {
+  const current = root.getAttribute('data-theme') ||
+    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  const next = current === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+  try { localStorage.setItem(THEME_KEY, next); } catch(e) {}
+}
+
+function initTheme() {
+  let saved;
+  try { saved = localStorage.getItem(THEME_KEY); } catch(e) {}
+  const theme = saved || getSystemTheme();
+  applyTheme(theme);
+}
+
+document.getElementById('themeToggleDesktop').addEventListener('click', toggleTheme);
+document.getElementById('themeToggleMobile').addEventListener('click', toggleTheme);
+
+// Keep in sync if system theme changes (e.g. user changes OS setting)
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+  try { if (!localStorage.getItem(THEME_KEY)) applyTheme(e.matches ? 'light' : 'dark'); }
+  catch(_) { applyTheme(e.matches ? 'light' : 'dark'); }
+});
+
 /* ── INIT ── */
+initTheme();
 loadProgress();
 updateProgress();
 </script>
