@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pak-Study: Key Historical Events</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5832/5832416.png">
+<style>
+/* ============================================================
+   FONTS
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&family=Playfair+Display:wght@600;700;800&display=swap');
+
+/* ============================================================
+   DESIGN TOKENS — Crescent Green & Gold Theme
+   ============================================================ */
+:root {
+  --bg:         #090e0b;
+  --bg2:        #101712;
+  --bg3:        #18221b;
+  --panel:      #1a261e;
+  --border:     #25362a;
+  --border2:    #324a3a;
+
+  --green:      #10b981; /* Pakistan Green vibe */
+  --green2:     #34d399;
+  --green-dim:  rgba(16, 185, 129, 0.15);
+  
+  --gold:       #fbbf24;
+  --gold2:      #f59e0b;
+  --gold-dim:   rgba(251, 191, 36, 0.15);
+
+  --crimson:    #ef4444; /* Exam Alerts */
+  --crim-dim:   rgba(239, 68, 68, 0.15);
+
+  --blue:       #38bdf8;
+  --blue-dim:   rgba(56, 189, 248, 0.15);
+
+  --text:       #e2e8f0;
+  --text2:      #94a3b8;
+  --text3:      #64748b;
+  --white:      #f8fafc;
+
+  --serif:      'Crimson Pro', Georgia, serif;
+  --display:    'Playfair Display', serif;
+  --sans:       'Inter', system-ui, sans-serif;
+  --mono:       'Fira Code', monospace;
+
+  --radius:     12px;
+  --radius2:    16px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden;}
+a{color:var(--green2);text-decoration:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.shell{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:280px;flex-shrink:0;background:var(--bg2);
+  border-right:1px solid var(--border);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:0 0 3rem;display:flex;flex-direction:column;z-index:100;
+  transition:transform 0.3s ease;
+}
+.sidebar::-webkit-scrollbar{width:3px}
+
+.sidebar-logo{
+  padding:1.5rem 1.4rem 1.2rem;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg, var(--green-dim), transparent);
+  flex-shrink:0; display:flex; align-items:flex-start; gap:0.8rem;
+}
+.sidebar-logo img { width:32px; height:32px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+.sidebar-logo .badge{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--green2);background:var(--green-dim);
+  padding:4px 8px;border-radius:4px;display:inline-block;margin-bottom:0.5rem;
+}
+.sidebar-logo h1{font-family:var(--display);font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.2;}
+
+/* progress ring */
+.progress-ring-wrap{
+  padding:1.2rem 1.4rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:1rem;
+}
+.progress-ring-wrap svg{flex-shrink:0}
+.ring-track{fill:none;stroke:var(--border2);stroke-width:3}
+.ring-fill{
+  fill:none;stroke:var(--gold);stroke-width:3;stroke-linecap:round;
+  stroke-dasharray:125.66;stroke-dashoffset:125.66;
+  transform:rotate(-90deg);transform-origin:50% 50%;
+  transition:stroke-dashoffset 0.7s ease;
+}
+.ring-pct{font-family:var(--sans);font-size:10px;fill:var(--white);font-weight:700;text-anchor:middle;dominant-baseline:middle}
+.progress-ring-wrap .info .label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;}
+.progress-ring-wrap .info .count{font-size:1.05rem;font-weight:700;color:var(--white)}
+
+/* nav */
+.nav-section{padding:1rem 1.2rem 0.2rem}
+.nav-section-label{
+  font-size:10.5px;letter-spacing:1.5px;font-weight:600;
+  text-transform:uppercase;color:var(--text3);margin-bottom:0.6rem;
+  padding-left:0.3rem;
+}
+.nav-item{
+  display:flex;align-items:center;gap:0.7rem;
+  padding:0.45rem 0.7rem;border-radius:7px;cursor:pointer;
+  font-size:12.5px;color:var(--text2);font-weight:500;
+  transition:all 0.2s;margin-bottom:3px; line-height:1.3;
+}
+.nav-item:hover{background:var(--bg3);color:var(--white)}
+.nav-item.active{background:var(--green-dim);color:var(--green2);border:1px solid rgba(16, 185, 129, 0.2);}
+.nav-item .dot{width:7px;height:7px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:all 0.2s;}
+.nav-item.done .dot{background:var(--gold)}
+.nav-item.active .dot{background:var(--green2);box-shadow:0 0 7px var(--green2)}
+
+/* ── HAMBURGER & OVERLAY ── */
+.hamburger{
+  display:none;position:fixed;top:0.7rem;right:1rem;z-index:200;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:8px;
+  padding:0.5rem;cursor:pointer;flex-direction:column;gap:4px;
+}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all 0.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  z-index:90;opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+.overlay.visible{opacity:1;pointer-events:all}
+
+/* ── MAIN ── */
+.main{flex:1;min-width:0;max-width:900px;margin:0 auto;padding:0 3rem 8rem}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;
+  background:rgba(9,14,11,0.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);z-index:40;
+  padding:0.7rem 3rem;display:flex;align-items:center;
+  justify-content:space-between;font-size:12px;font-weight:500;
+  margin:0 -3rem;
+}
+.topbar .tb-left{color:var(--text3);display:flex;align-items:center;gap:0.5rem}
+.topbar .tb-left strong{color:var(--text2)}
+.topbar .tb-right{display:flex;align-items:center;gap:0.8rem;color:var(--text3)}
+.pbar{height:4px;background:var(--border);width:100px;border-radius:99px;overflow:hidden;}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:99px;width:0%;transition:width 0.4s ease;}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  padding:4rem 0 3rem;position:relative;
+}
+.hero::before{
+  content:'';position:absolute;top:0;left:-3rem;right:-3rem;height:3px;
+  background:linear-gradient(90deg,transparent,var(--green),var(--gold),transparent);
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-family:var(--mono);font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:1rem;
+}
+.hero-eyebrow span{width:25px;height:1px;background:var(--gold);display:block;}
+.hero h1{
+  font-family:var(--display);font-size:clamp(2.2rem,5vw,3.5rem);
+  font-weight:800;line-height:1.1;color:var(--white);
+  margin-bottom:1.2rem;letter-spacing:-0.5px;
+}
+.hero h1 .accent{
+  background:linear-gradient(90deg,var(--green2),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-desc{font-family:var(--serif);font-size:1.2rem;color:var(--text2);max-width:650px;margin-bottom:2rem;line-height:1.7;}
+.hero-stats{display:flex;gap:0.8rem;flex-wrap:wrap;}
+.stat-pill{
+  display:flex;align-items:center;gap:0.5rem;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:0.4rem 1rem;
+  font-size:12px;color:var(--text2);font-weight:500;
+}
+
+/* ============================================================
+   CHAPTER HEADERS
+   ============================================================ */
+.ch-header{
+  margin:4rem 0 2.5rem;padding:2rem 2.5rem;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius2);position:relative;overflow:hidden;
+}
+.ch-header::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--green-dim),transparent 60%);
+  pointer-events:none;
+}
+.ch-header .ch-num{
+  font-family:var(--mono);font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--green2);margin-bottom:0.6rem;
+}
+.ch-header h2{
+  font-family:var(--display);font-size:1.8rem;font-weight:700;
+  color:var(--white);margin-bottom:0.4rem;
+}
+.ch-header .ch-desc{color:var(--text2);font-size:0.95rem;}
+
+/* ============================================================
+   TOPIC
+   ============================================================ */
+.topic{
+  margin:3rem 0;opacity:0;transform:translateY(20px);
+  transition:opacity 0.6s ease,transform 0.6s ease;
+}
+.topic.visible{opacity:1;transform:none}
+.topic-title{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;}
+.topic-title h3{font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--white);}
+.marker{
+  width:36px;height:36px;border-radius:10px;background:var(--bg3);
+  border:1px solid var(--border2);display:flex;align-items:center;
+  justify-content:center;font-size:16px;flex-shrink:0;
+}
+.marker.green { background:var(--green-dim); border-color:var(--green); }
+.marker.gold { background:var(--gold-dim); border-color:var(--gold); }
+.marker.blue { background:var(--blue-dim); border-color:var(--blue); }
+
+.check-btn{
+  margin-left:auto;width:30px;height:30px;border-radius:50%;
+  border:2px solid var(--border2);background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  transition:all 0.2s;flex-shrink:0;color:transparent;
+}
+.check-btn:hover{border-color:var(--gold);background:var(--gold-dim)}
+.check-btn.checked{border-color:var(--gold);background:var(--gold);color:var(--bg)}
+
+p{margin-bottom:1rem;color:var(--text);font-size:1rem;font-family:var(--serif);font-size:1.1rem;line-height:1.7}
+
+/* ============================================================
+   BOXES
+   ============================================================ */
+.box{border-radius:var(--radius);padding:1.4rem 1.6rem;margin:1.6rem 0;border-left:4px solid;position:relative;background:var(--bg2);}
+.box .box-label{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.5rem;}
+.box p{margin:0 0 0.5rem;font-size:0.95rem;line-height:1.6;font-family:var(--sans)}
+.box p:last-child{margin-bottom:0}
+.box ul, .box ol{margin:0.5rem 0 0 1.2rem;font-family:var(--sans);font-size:0.95rem;color:var(--text)}
+
+.box.def{border-color:var(--green)}
+.box.def .box-label{color:var(--green2)}
+.box.eg{border-color:var(--gold)}
+.box.eg .box-label{color:var(--gold)}
+/* RED EXAM ALERT */
+.box.exam{border-color:var(--crimson); background:var(--crim-dim);}
+.box.exam .box-label{color:var(--crimson)}
+
+/* ============================================================
+   FORMULA / FAST FACTS BLOCK
+   ============================================================ */
+.fml{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);margin:1.6rem 0;overflow:hidden}
+.fml-head{background:var(--bg3);padding:0.6rem 1.2rem;font-size:10.5px;letter-spacing:2px;font-weight:600;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border)}
+.fml-body{padding:1.2rem 1.5rem;font-family:var(--mono);font-size:0.9rem;color:var(--gold);line-height:2.2}
+.fml-body strong{color:var(--white);}
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline{position:relative;margin:1.8rem 0;padding-left:1.5rem;list-style:none;}
+.timeline::before{
+  content:'';position:absolute;left:0;top:8px;bottom:8px;
+  width:2px;background:linear-gradient(180deg,var(--green),var(--gold));
+}
+.tl-item{position:relative;padding:0 0 1.8rem 1.2rem;}
+.tl-item::before{
+  content:'';position:absolute;left:-1.95rem;top:0.2rem;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--bg);border:3px solid var(--gold);
+}
+.tl-year{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--gold);margin-bottom:0.2rem;font-weight:600;}
+.tl-title{font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:0.4rem;}
+.tl-desc{font-size:0.95rem;color:var(--text2);line-height:1.6;}
+
+/* ============================================================
+   COMPARISON GRIDS
+   ============================================================ */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1.6rem 0}
+.cmp-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.4rem}
+.cmp-card h4{font-weight:700;font-size:1rem;margin-bottom:0.8rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+.cmp-card ul{list-style:none;padding:0;margin:0;}
+.cmp-card ul li{font-size:0.9rem;color:var(--text2);padding:0.35rem 0 0.35rem 1.2rem;position:relative;border-bottom:1px solid rgba(255,255,255,0.03)}
+.cmp-card ul li:last-child{border-bottom:none}
+.cmp-card ul li::before{content:'▶';position:absolute;left:0;font-size:10px;}
+.cmp-green{border-color:rgba(16, 185, 129, 0.4)}
+.cmp-green h4{color:var(--green2)}
+.cmp-green ul li::before{color:var(--green2)}
+.cmp-gold{border-color:rgba(251, 191, 36, 0.4)}
+.cmp-gold h4{color:var(--gold)}
+.cmp-gold ul li::before{color:var(--gold)}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+.mini-quiz{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius2);padding:2rem;margin-top:2.5rem;
+  position:relative;overflow:hidden;
+}
+.mini-quiz::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--green),var(--gold),var(--green));
+}
+.mini-quiz h4{
+  font-family:var(--display);font-size:1.2rem;color:var(--white);
+  margin-bottom:1.5rem;display:flex;align-items:center;gap:0.6rem;
+}
+.quiz-q{margin-bottom:2rem;}
+.quiz-q:last-child{margin-bottom:0;}
+.q-text{font-size:1.05rem;color:var(--white);margin-bottom:1rem;font-weight:500;line-height:1.5;}
+.options{display:flex;flex-direction:column;gap:0.6rem;}
+.opt{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:8px;padding:0.8rem 1.2rem;
+  font-size:0.95rem;color:var(--text);font-family:inherit;
+  cursor:pointer;text-align:left;transition:all 0.2s;
+}
+.opt:hover:not(:disabled){border-color:var(--gold);background:var(--gold-dim);}
+.opt.correct{border-color:var(--green)!important;background:var(--green-dim)!important;color:var(--green)!important;}
+.opt.wrong{border-color:var(--crimson)!important;background:var(--crim-dim)!important;color:var(--crimson)!important;}
+.opt:disabled{cursor:default;}
+.q-feedback{
+  font-size:0.9rem;margin-top:0.8rem;
+  padding:0.8rem 1rem;border-radius:8px;display:none;font-weight:500;
+}
+.q-feedback.show{display:block;}
+.q-feedback.ok{background:var(--green-dim);color:var(--green2);border:1px solid rgba(16, 185, 129, 0.2);}
+.q-feedback.fail{background:var(--crim-dim);color:var(--crimson);border:1px solid rgba(239, 68, 68, 0.2);}
+
+/* ============================================================
+   RESPONSIVE (Mobile First & All Displays)
+   ============================================================ */
+@media (max-width: 1024px) {
+  .sidebar { width: 250px; }
+  .main { padding: 0 2rem 5rem; }
+  .topbar { padding: 0.7rem 2rem; margin: 0 -2rem; }
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .overlay { display: block; }
+  .sidebar {
+    position: fixed; left: 0; top: 0; height: 100vh;
+    transform: translateX(-100%); z-index: 100; width: 260px;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .shell { display: block; }
+  .main { padding: 0 1.2rem 5rem; max-width: 100%; margin-top: 3.5rem; }
+  .topbar { display: none; /* Hide topbar on mobile, rely on header */ }
+  .hero { padding: 1rem 0 2rem; }
+  .hero::before { left: -1.2rem; right: -1.2rem; }
+  .hero h1 { font-size: 2rem; }
+  .cmp { grid-template-columns: 1fr; }
+  .ch-header { padding: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.7rem; }
+  .hero-stats { flex-direction: column; gap: 0.5rem; }
+  .box { padding: 1rem 1.2rem; }
+  .fml-body { font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="overlay" id="overlay"></div>
+
+<div class="shell">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="https://cdn-icons-png.flaticon.com/512/5832/5832416.png" alt="Icon">
+    <div>
+      <div class="badge">PAK-STUDY</div>
+      <h1>Historical Events</h1>
+    </div>
+  </div>
+
+  <div class="progress-ring-wrap">
+    <svg width="48" height="48" viewBox="0 0 48 48">
+      <circle class="ring-track" cx="24" cy="24" r="20"/>
+      <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="20"/>
+      <text class="ring-pct" id="ringPct" x="24" y="24">0%</text>
+    </svg>
+    <div class="info">
+      <div class="label">Course Progress</div>
+      <div class="count"><span id="doneCount">0</span> / <span id="totalCount">0</span> topics</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">1. Awakening (1905-1906)</div>
+    <div class="nav-item" data-target="t1-1"><div class="dot"></div>Partition of Bengal</div>
+    <div class="nav-item" data-target="t1-2"><div class="dot"></div>Simla Deputation</div>
+    <div class="nav-item" data-target="t1-3"><div class="dot"></div>Establishment of AIML</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">2. Reforms & Pacts (1909-1919)</div>
+    <div class="nav-item" data-target="t2-1"><div class="dot"></div>Minto-Morley Reforms</div>
+    <div class="nav-item" data-target="t2-2"><div class="dot"></div>Lucknow Pact</div>
+    <div class="nav-item" data-target="t2-3"><div class="dot"></div>Montagu-Chelmsford</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">3. Path to Independence</div>
+    <div class="nav-item" data-target="t3-1"><div class="dot"></div>Pakistan Resolution</div>
+  </div>
+</aside>
+
+<div class="main">
+
+  <div class="topbar">
+    <div class="tb-left">📜 <strong>Pak-Study</strong> — Key Historical Events</div>
+    <div class="tb-right">
+      <span id="topPct">0%</span>
+      <div class="pbar"><div class="pbar-fill" id="topBar"></div></div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-eyebrow"><span></span>Pre-Partition Era (1905–1940)<span></span></div>
+    <h1>Key Historical Events of <br><span class="accent">Pakistan Movement</span></h1>
+    <p class="hero-desc">Trace the political awakening of Muslims in the subcontinent. From the administrative division of Bengal to the landmark Lahore Resolution, master the milestones that led to independence.</p>
+    <div class="hero-stats">
+      <div class="stat-pill">📚 <strong>7</strong>&nbsp;Core Topics</div>
+      <div class="stat-pill">🔴 <strong>Exam Alerts</strong>&nbsp;Highlighted</div>
+      <div class="stat-pill">✅ <strong>Interactive</strong>&nbsp;Quizzes</div>
+      <div class="stat-pill">💾 <strong>Auto-Saves</strong>&nbsp;Progress</div>
+    </div>
+  </header>
+
+  <div class="ch-header">
+    <div class="ch-num">Chapter 1 of 3</div>
+    <h2>The Awakening (1905–1906)</h2>
+    <p class="ch-desc">The catalyst events that shattered Hindu-Muslim political unity and forced Muslims to demand their own political platform.</p>
+  </div>
+
+  <section class="topic" id="t1-1">
+    <div class="topic-title">
+      <div class="marker green">🗺️</div>
+      <h3>Topic 1.1: Partition of Bengal (1905) & Its Annulment</h3>
+      <button class="check-btn" onclick="toggleDone(this,'t1-1')">✓</button>
+    </div>
+
+    <p>Bengal was the largest and most populated province of British India (pop. 85 million), making it administratively unmanageable. On <strong>October 16, 1905</strong>, Viceroy Lord Curzon officially partitioned it into two provinces.</p>
+
+    <div class="cmp">
+      <div class="cmp-card cmp-green">
+        <h4>East Bengal & Assam</h4>
+        <ul>
+          <li><strong>Capital:</strong> Dhaka</li>
+          <li><strong>Demographics:</strong> Muslim majority (18M Muslims, 12M Hindus)</li>
+          <li><strong>Reaction:</strong> Muslims rejoiced as it promised better educational, economic, and political opportunities free from Hindu landlord domination.</li>
+        </ul>
+      </div>
+      <div class="cmp-card cmp-gold">
+        <h4>West Bengal</h4>
+        <ul>
+          <li><strong>Capital:</strong> Calcutta</li>
+          <li><strong>Demographics:</strong> Hindu majority</li>
+          <li><strong>Reaction:</strong> Hindus (led by Indian National Congress) furiously opposed it, seeing it as a "Divide and Rule" tactic. Launched the <em>Swadeshi Movement</em> (boycott of British goods).</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>Due to severe Hindu agitation, terrorism, and political pressure, the British government yielded. On <strong>December 12, 1911</strong>, King George V announced the <strong>Annulment of the Partition</strong> at the Delhi Durbar, reuniting Bengal.</p>
+
+    <div class="box exam">
+      <div class="box-label">🔴 Exam Alert — Impact of Annulment</div>
+      <p>Examiners frequently ask: <em>"Why was the Annulment a turning point for Muslims?"</em><br>
+      <strong>Answer:</strong> It proved to Muslims that they could not trust the British government's promises, nor could they rely on the Hindu-dominated Congress. It cemented the belief that Muslims needed their own strong, separate political organization to survive.</p>
+    </div>
+  </section>
+
+  <section class="topic" id="t1-2">
+    <div class="topic-title">
+      <div class="marker gold">📜</div>
+      <h3>Topic 1.2: Simla Deputation (1906)</h3>
+      <button class="check-btn" onclick="toggleDone(this,'t1-2')">✓</button>
+    </div>
+
+    <p>With impending constitutional reforms (which would introduce more elections), Muslims realized that in a joint electorate, the Hindu majority would always win. To secure their rights, a delegation was formed.</p>
+
+    <div class="fml">
+      <div class="fml-head">📅 Fast Facts: Simla Deputation</div>
+      <div class="fml-body">
+        <strong>Date:</strong> October 1, 1906<br>
+        <strong>Location:</strong> Simla (Summer capital)<br>
+        <strong>Led by:</strong> Sir Aga Khan III<br>
+        <strong>Delegation:</strong> 35 prominent Muslim leaders<br>
+        <strong>Met with:</strong> Viceroy Lord Minto
+      </div>
+    </div>
+
+    <p><strong>Primary Demands:</strong></p>
+    <ol>
+      <li><strong>Separate Electorates:</strong> Muslims should vote for Muslim candidates in reserved constituencies.</li>
+      <li><strong>Weightage:</strong> Muslim representation should be based on their historical importance, not just numerical population.</li>
+      <li>Adequate share in government services and university syndicates.</li>
+    </ol>
+
+    <p>Lord Minto was sympathetic and accepted their demands. This was the first monumental political victory for Muslims, formally recognizing them as a distinct political entity (the practical application of the Two-Nation Theory).</p>
+  </section>
+
+  <section class="topic" id="t1-3">
+    <div class="topic-title">
+      <div class="marker blue">⭐</div>
+      <h3>Topic 1.3: Establishment of All India Muslim League</h3>
+      <button class="check-btn" onclick="toggleDone(this,'t1-3')">✓</button>
+    </div>
+
+    <p>The success of the Simla Deputation proved that organized political action worked. However, a one-time delegation wasn't enough; a permanent platform was needed.</p>
+    
+    <p>On <strong>December 30, 1906</strong>, at the annual meeting of the Muhammadan Educational Conference in <strong>Dhaka</strong>, Nawab Salimullah Khan proposed the formation of a political party. The <strong>All India Muslim League (AIML)</strong> was born.</p>
+
+    <div class="box def">
+      <div class="box-label">🔍 Causes for Formation (Vs. AINC)</div>
+      <p>Why not just join the All India National Congress (AINC)?</p>
+      <ul>
+        <li><strong>Hindu Agitation over Bengal:</strong> Congress explicitly opposed the Partition of Bengal, directly hurting Muslim interests.</li>
+        <li><strong>Urdu-Hindi Controversy:</strong> Hindu efforts to replace Urdu with Hindi threatened Muslim culture.</li>
+        <li><strong>Hindu Extremism:</strong> Rise of movements like Arya Samaj and cow protection societies alienated Muslims.</li>
+        <li><strong>Need for Representation:</strong> Muslims needed a unified voice to negotiate with the British for constitutional rights.</li>
+      </ul>
+    </div>
+
+    <div class="mini-quiz">
+      <h4>🧪 Chapter 1 — Checkpoint Quiz</h4>
+      <div class="quiz-q">
+        <div class="q-text">1. What was the most critical demand presented by the Simla Deputation in 1906?</div>
+        <div class="options">
+          <button class="opt" onclick="checkAnswer(this, false, 'Immediate independence was not demanded until decades later.')">A. Immediate independence from British rule</button>
+          <button class="opt" onclick="checkAnswer(this, true, 'Correct! Separate electorates ensured Muslims would not be politically drowned out by the Hindu majority.')">B. Separate Electorates</button>
+          <button class="opt" onclick="checkAnswer(this, false, 'Reuniting Bengal was the demand of the Hindus, not the Muslims.')">C. Reuniting Bengal</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+      <div class="quiz-q">
+        <div class="q-text">2. Who proposed the creation of the All India Muslim League at Dhaka in 1906?</div>
+        <div class="options">
+          <button class="opt" onclick="checkAnswer(this, true, 'Correct! Nawab Salimullah of Dhaka proposed the formation of the AIML.')">A. Nawab Salimullah Khan</button>
+          <button class="opt" onclick="checkAnswer(this, false, 'Jinnah did not join the AIML until 1913.')">B. Quaid-e-Azam M.A. Jinnah</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ch-header">
+    <div class="ch-num">Chapter 2 of 3</div>
+    <h2>Constitutional Reforms & Pacts (1909–1919)</h2>
+    <p class="ch-desc">The era of political negotiation, British constitutional concessions, and a brief period of Hindu-Muslim unity.</p>
+  </div>
+
+  <section class="topic" id="t2-1">
+    <div class="topic-title">
+      <div class="marker green">⚖️</div>
+      <h3>Topic 2.1: Minto-Morley Reforms (1909)</h3>
+      <button class="check-btn" onclick="toggleDone(this,'t2-1')">✓</button>
+    </div>
+
+    <p>Formally known as the <em>Indian Councils Act 1909</em>, these reforms were drafted by Lord Minto (Viceroy) and John Morley (Secretary of State). They represent the <strong>first major achievement of the AIML</strong>.</p>
+
+    <div class="box exam">
+      <div class="box-label">🔴 Exam Alert — The Great Victory</div>
+      <p>The most crucial aspect of the Minto-Morley Reforms for Pak-Study is that <strong>it legally granted Separate Electorates to Muslims</strong>. This was a constitutional validation of the Two-Nation Theory, proving the British recognized Muslims as a distinct entity.</p>
+    </div>
+
+    <p>Other features included expanding the Imperial and Provincial Legislative Councils and appointing Indians to the Viceroy's Executive Council for the first time.</p>
+  </section>
+
+  <section class="topic" id="t2-2">
+    <div class="topic-title">
+      <div class="marker gold">🤝</div>
+      <h3>Topic 2.2: Lucknow Pact (1916)</h3>
+      <button class="check-btn" onclick="toggleDone(this,'t2-2')">✓</button>
+    </div>
+
+    <p>The <strong>Lucknow Pact</strong> is a landmark event because it was the first (and only) time the Indian National Congress and the Muslim League agreed on a joint constitutional scheme. It was engineered largely by Quaid-e-Azam, earning him the title <em>"Ambassador of Hindu-Muslim Unity."</em></p>
+
+    <div class="kp-box" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;margin:1.5rem 0;">
+      <div style="background:var(--bg3);padding:0.6rem 1.2rem;font-size:11px;letter-spacing:1px;font-weight:600;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border)">Key Agreements of Lucknow Pact</div>
+      <div style="padding:1.2rem 1.5rem;">
+        <div style="display:flex; gap:0.8rem; margin-bottom:0.8rem; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:0.8rem;">
+          <span style="color:var(--gold);font-weight:bold;">1</span>
+          <span><strong>Congress Accepted Separate Electorates:</strong> A massive win for AIML. Congress formally accepted that Muslims should vote for their own representatives.</span>
+        </div>
+        <div style="display:flex; gap:0.8rem; margin-bottom:0.8rem; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:0.8rem;">
+          <span style="color:var(--gold);font-weight:bold;">2</span>
+          <span><strong>One-Third Representation:</strong> Muslims were granted 1/3rd representation in the Central Legislature.</span>
+        </div>
+        <div style="display:flex; gap:0.8rem;">
+          <span style="color:var(--gold);font-weight:bold;">3</span>
+          <span><strong>Provincial Weightage:</strong> Muslims gave up majorities in Punjab and Bengal in exchange for higher representation in Hindu-majority provinces (a controversial concession).</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="topic" id="t2-3">
+    <div class="topic-title">
+      <div class="marker blue">🏛️</div>
+      <h3>Topic 2.3: Montagu-Chelmsford Reforms (1919)</h3>
+      <button class="check-btn" onclick="toggleDone(this,'t2-3')">✓</button>
+    </div>
+
+    <p>Also known as the <em>Government of India Act 1919</em>, these reforms aimed to introduce self-governing institutions gradually to India.</p>
+
+    <ul class="bl">
+      <li><strong>Diarchy in Provinces:</strong> A dual system of government. Subjects were divided into "Reserved" (kept by the British Governor, e.g., police, finance) and "Transferred" (given to Indian ministers, e.g., health, education).</li>
+      <li><strong>Bicameral Legislature:</strong> The central legislature was divided into two houses: the Council of State (Upper) and the Legislative Assembly (Lower).</li>
+      <li><strong>Separate Electorates Retained:</strong> The rights gained by Muslims in 1909 were upheld and expanded to other minorities (Sikhs).</li>
+    </ul>
+
+    <div class="mini-quiz">
+      <h4>🧪 Chapter 2 — Checkpoint Quiz</h4>
+      <div class="quiz-q">
+        <div class="q-text">1. Which constitutional reform officially granted Separate Electorates to Muslims for the first time?</div>
+        <div class="options">
+          <button class="opt" onclick="checkAnswer(this, false, 'Montagu-Chelmsford retained them, but did not introduce them.')">A. Montagu-Chelmsford Reforms (1919)</button>
+          <button class="opt" onclick="checkAnswer(this, true, 'Correct! The 1909 reforms delivered what the Simla Deputation requested.')">B. Minto-Morley Reforms (1909)</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+      <div class="quiz-q">
+        <div class="q-text">2. The Lucknow Pact (1916) is historically famous because:</div>
+        <div class="options">
+          <button class="opt" onclick="checkAnswer(this, true, 'Correct! It was a rare moment of unity where Congress accepted the AIML demand for separate electorates.')">A. The Congress and Muslim League agreed on a joint constitutional plan, including separate electorates.</button>
+          <button class="opt" onclick="checkAnswer(this, false, 'The British partitioning Bengal happened in 1905, totally unrelated to the 1916 pact.')">B. The British agreed to partition Bengal again.</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ch-header">
+    <div class="ch-num">Chapter 3 of 3</div>
+    <h2>The Path to Independence (1940)</h2>
+    <p class="ch-desc">The final ideological shift from demanding "safeguards within India" to demanding a completely separate sovereign state.</p>
+  </div>
+
+  <section class="topic" id="t3-1">
+    <div class="topic-title">
+      <div class="marker green">🇵🇰</div>
+      <h3>Topic 3.1: Pakistan (Lahore) Resolution (1940)</h3>
+      <button class="check-btn" onclick="toggleDone(this,'t3-1')">✓</button>
+    </div>
+
+    <p>By 1940, after the bitter experience of Congress Ministries (1937-1939) which heavily marginalized Muslims, the AIML realized that safeguards within a united India were impossible. A drastic step was needed.</p>
+
+    <div class="fml">
+      <div class="fml-head">📅 Fast Facts: Lahore Resolution</div>
+      <div class="fml-body">
+        <strong>Date:</strong> March 23, 1940<br>
+        <strong>Venue:</strong> Minto Park (now Iqbal Park), Lahore<br>
+        <strong>Presided by:</strong> Quaid-e-Azam M.A. Jinnah<br>
+        <strong>Moved by:</strong> A.K. Fazlul Haq (Sher-e-Bengal)
+      </div>
+    </div>
+
+    <p><strong>Core Declaration of the Resolution:</strong><br>
+    No constitutional plan would be workable or acceptable to Muslims unless geographically contiguous units are demarcated into regions. The areas in which the Muslims are numerically in a majority (the North-Western and Eastern Zones of India) should be grouped to constitute <strong>"Independent States"</strong> in which the constituent units shall be autonomous and sovereign.</p>
+
+    <div class="box exam">
+      <div class="box-label">🔴 Exam Alert — Significance of the Resolution</div>
+      <p>This is arguably the most important event in Pak-Study. <br>
+      <strong>Why is it significant?</strong> It completely changed the goal of the Muslim League. Before March 23, 1940, Muslims wanted their rights protected *inside* India. After this resolution, the only acceptable goal was the partition of the subcontinent and the creation of a completely separate homeland.</p>
+    </div>
+
+    <p><em>Note: The Hindu press mockingly called it the "Pakistan Resolution." The Muslim League gladly adopted the name, and within 7 years, the impossible became reality.</em></p>
+
+    <div class="mini-quiz">
+      <h4>🧪 Final Checkpoint Quiz</h4>
+      <div class="quiz-q">
+        <div class="q-text">1. Who formally presented (moved) the Pakistan Resolution on March 23, 1940?</div>
+        <div class="options">
+          <button class="opt" onclick="checkAnswer(this, false, 'Jinnah presided over the session, but he did not move the resolution.')">A. Quaid-e-Azam</button>
+          <button class="opt" onclick="checkAnswer(this, true, 'Correct! A.K. Fazlul Haq, the Chief Minister of Bengal, moved the resolution.')">B. A.K. Fazlul Haq</button>
+          <button class="opt" onclick="checkAnswer(this, false, 'Iqbal proposed the idea in 1930, but died in 1938.')">C. Allama Iqbal</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+</div></div>
+
+<script>
+/* ── LOCAL STORAGE & PROGRESS ── */
+const STORAGE_KEY = 'pak_study_v1';
+
+function saveProgress() {
+  const done = [];
+  document.querySelectorAll('.check-btn.checked').forEach(b => {
+    const s = b.closest('.topic');
+    if (s) done.push(s.id);
+  });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(done));
+  } catch (e) { console.warn("LocalStorage disabled"); }
+}
+
+function loadProgress() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    d.forEach(id => {
+      const s = document.getElementById(id);
+      if (!s) return;
+      const b = s.querySelector('.check-btn');
+      if (b) b.classList.add('checked');
+      document.querySelectorAll(`.nav-item[data-target="${id}"]`).forEach(n => n.classList.add('done'));
+    });
+  } catch (e) {}
+}
+
+const totalTopics = document.querySelectorAll('.topic').length;
+document.getElementById('totalCount').textContent = totalTopics;
+
+function updateProgress() {
+  const n = document.querySelectorAll('.check-btn.checked').length;
+  const p = Math.round((n / totalTopics) * 100);
+  document.getElementById('doneCount').textContent = n;
+  document.getElementById('topPct').textContent = p + '%';
+  document.getElementById('topBar').style.width = p + '%';
+  
+  const c = 2 * Math.PI * 20;
+  document.getElementById('ringFill').style.strokeDashoffset = c - (p / 100) * c;
+  document.getElementById('ringPct').textContent = p + '%';
+}
+
+function toggleDone(btn, id) {
+  btn.classList.toggle('checked');
+  document.querySelectorAll(`.nav-item[data-target="${id}"]`).forEach(n => n.classList.toggle('done'));
+  updateProgress();
+  saveProgress();
+}
+
+/* ── INTERSECTION OBSERVER (Scroll Spy) ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      const id = e.target.id;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll(`.nav-item[data-target="${id}"]`).forEach(n => n.classList.add('active'));
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.topic').forEach(t => observer.observe(t));
+
+/* ── SIDEBAR NAVIGATION ── */
+document.querySelectorAll('.nav-item[data-target]').forEach(item => {
+  item.addEventListener('click', () => {
+    const target = document.getElementById(item.dataset.target);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+  });
+});
+
+/* ── HAMBURGER MENU (MOBILE) ── */
+const ham = document.getElementById('hamburger');
+const sb = document.getElementById('sidebar');
+const ov = document.getElementById('overlay');
+
+function openSidebar() {
+  sb.classList.add('open');
+  ov.classList.add('visible');
+  ham.classList.add('open');
+}
+function closeSidebar() {
+  sb.classList.remove('open');
+  ov.classList.remove('visible');
+  ham.classList.remove('open');
+}
+
+ham.addEventListener('click', () => sb.classList.contains('open') ? closeSidebar() : openSidebar());
+ov.addEventListener('click', closeSidebar);
+
+/* ── QUIZ LOGIC ── */
+function checkAnswer(btn, isCorrect, feedback) {
+  const options = btn.parentElement.querySelectorAll('.opt');
+  options.forEach(opt => opt.disabled = true);
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  const fbDiv = btn.parentElement.nextElementSibling;
+  fbDiv.innerHTML = (isCorrect ? '✅ ' : '❌ ') + feedback;
+  fbDiv.className = 'q-feedback show ' + (isCorrect ? 'ok' : 'fail');
+}
+
+/* ── INIT ── */
+loadProgress();
+updateProgress();
+</script>
+</body>
+</html>
